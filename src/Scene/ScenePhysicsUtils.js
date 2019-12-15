@@ -10,6 +10,16 @@ export function moveWithGameObject (gameObject) {
     gameObject.y += verticalSpeed || 0;
 }
 
-export function detectObjectCollisions (gameObject) {
-    
+export function detectObjectCollisions (instances, gameObject) {
+    const { objectSize: { width, height } } = gameObject;
+
+    gameObject.collisionList = instances.filter(instance => (
+        instance !== gameObject
+        && gameObject.x >= instance.x - width && gameObject.x <= instance.x + width
+        && gameObject.y >= instance.y - height && gameObject.y <= instance.y + height
+    ));
+
+    if (gameObject.collisionList.length) {
+        gameObject.onCollision();
+    }
 }

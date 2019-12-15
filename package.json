@@ -9,7 +9,7 @@
   ],
   "license": "MIT",
   "description": "JS game engine",
-  "typings": "./_typings/Game.d.ts",
+  "typings": "./@typings/Game.d.ts",
   "scripts": {
     "build": "rollup -c"
   },

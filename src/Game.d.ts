@@ -9,6 +9,7 @@ import Scene from "./@typings/Scene";
 import GameObjectFactory from "./@typings/GameObjectFactory";
 import GameObjectInstanceFactory from "./@typings/GameObjectInstanceFactory";
 import Random from "./@typings/Random";
+import Sound from "./@typings/Sound";
 
 export default interface Game {
     scene: Scene,
@@ -16,4 +17,5 @@ export default interface Game {
     gameObjectFactory: GameObjectFactory,
     gameObjectInstanceFactory: GameObjectInstanceFactory
     random: Random
+    sound: Sound
 }

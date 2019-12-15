@@ -8,7 +8,7 @@ export default class GameObject {
     constructor () {
         this.x = 0;
         this.y = 0;
-        this.setObjectSize();
+        this.objectSize = {};
     }
 
     setPosition (x, y) {
@@ -34,14 +34,18 @@ export default class GameObject {
     }
 
     setObjectSize (width = 0, height = 0) {
-        this.width = width;
-        this.height = height;
+        this.objectSize.width = width;
+        this.objectSize.height = height;
     }
 
-    setSprite (imageUrl) {
+    setSprite (imageUrl, { widthMultiplier = 1, heightMultiplier = 1 }) {
         const sprite = new Image;
         sprite.src = imageUrl;
-        sprite.onload = () => this.setObjectSize(sprite.naturalWidth, sprite.naturalHeight);
+        sprite.onload = () => this.setObjectSize(
+            sprite.naturalWidth * widthMultiplier,
+            sprite.naturalHeight * heightMultiplier
+        );
+
         return this.sprite = sprite;
     }
 
@@ -51,6 +55,37 @@ export default class GameObject {
         document.body.addEventListener(keyEvent, e => {
             if (e.key === key) callback(e);
         });
+    }
+
+    isCollidingWith (instance) {
+        return this.collisionList.some(collisionInstance =>
+            collisionInstance === instance || collisionInstance.id === instance
+        );
+    }
+
+    get isColliding () {
+        return this.collisionList.length > 0;
+    }
+
+    _isFree (callback) {
+        const { collisionList } = this;
+        return collisionList.filter(callback).length > 0 || collisionList.length === 0;
+    }
+
+    isFreeXOnLeft (x) {
+        return this._isFree(collisionInstance => this.x + x < collisionInstance.x);
+    }
+
+    isFreeXOnRight (x) {
+        return this._isFree(collisionInstance => this.x + x > collisionInstance.x);
+    }
+
+    isFreeYOnTop (y) {
+        return this._isFree(collisionInstance => this.y + y < collisionInstance.y);
+    }
+
+    isFreeYOnBottom (y) {
+        return this._isFree(collisionInstance => this.y + y > collisionInstance.y);
     }
 
     onKey (key, callback) {

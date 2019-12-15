@@ -13,8 +13,8 @@ export default interface Scene {
 }
 
 interface BackgroundOptions {
-    backgroundUrl?: string,
-    backgroundColor?: string,
-    verticalSpeed?: number,
+    backgroundUrl?: string
+    backgroundColor?: string
+    verticalSpeed?: number
     horizontalSpeed?: number
 }

@@ -57,11 +57,13 @@ export function drawRectangles () {
 }
 
 export function drawAndHandleObjectEvents () {
-    Object.values(this.gameObjectInstanceFactory.instances).forEach(gameObject => {
+    const { instances } = this.gameObjectInstanceFactory;
+
+    Object.values(instances).forEach(gameObject => {
         const { x, y, sprite } = gameObject;
         handleGameObjectKeyEvents(gameObject);
         moveWithGameObject(gameObject);
-        detectObjectCollisions.call(this, gameObject);
+        detectObjectCollisions(instances, gameObject);
         this.canvasContext.drawImage(sprite, x, y);
     });
 }

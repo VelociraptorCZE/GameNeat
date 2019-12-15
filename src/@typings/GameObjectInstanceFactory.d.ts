@@ -8,4 +8,5 @@ import GameObject from "./GameObject";
 
 export default interface GameObjectInstanceFactory {
     createInstance (gameObjectId: any): GameObject | undefined
+    removeInstance (instance: GameObject): void
 }

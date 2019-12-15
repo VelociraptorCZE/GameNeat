@@ -20,16 +20,25 @@ export default class GameObjectInstanceFactory {
         const gameObject = gameObjectList[gameObjectId];
 
         if (gameObject instanceof GameObject) {
-            const instance = this.cloneObject(gameObject);
+            const instance = this._cloneObject(gameObject);
             instances.push(instance);
             return instance;
         }
     }
 
-    cloneObject (gameObject) {
+    removeInstance (instance) {
+        const { instances } = this;
+        const instanceIndex = instances.indexOf(instance);
+
+        if (instanceIndex !== -1) {
+            instances.splice(instanceIndex, 1);
+        }
+    }
+
+    _cloneObject (gameObject) {
         const instance = Object.assign(new GameObject, gameObject);
-        instance.collisionList = {};
         instance.pressedKeys = new Set;
+        instance.collisionList = [];
         instance.keyEvents = [];
         return instance;
     }
