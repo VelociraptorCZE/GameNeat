@@ -107,7 +107,7 @@ game.scene.setOnRenderCallback(() => {
 
 #### drawText(options: DrawTextOptions)
 
-Draws text on canvas with specified position, content and possibly alongside dynamic content.
+Draws a text on canvas with specified position, content and possibly alongside dynamic content.
 
 ```js
 game.draw.drawText({ x: 8, y: 32, content: "Static content" });
@@ -124,16 +124,95 @@ game.scene.setOnRenderCallback(() => {
 
 game.draw.drawText({ x: 8, y: 32, content: "Counter: {counter}", data });
 ```
- 
+
+#### drawRectangle (options: DrawRectangleOptions): object
+
+Draws a rectangle with given coordinates.
+
+```js
+game.draw.drawRectangle({
+    x1: 24,
+    y1: 24,
+    x2: 128,
+    y2: 52,
+    fill: true,
+    fillColor: "#00f017"
+});
+```
  
 ## GameObjectFactory
 
 - createObject (gameObjectId: any, overrideObject?: boolean): GameObject
 
+GameObjectFactory contains only one method - createObject. 
+This method creates an object which then can be instantiated, returns GameObject.
+
+```js
+const player = game.gameObjectFactory.createObject("player");
+```
+
 ## GameObjectInstanceFactory
 
 - createInstance (gameObjectId: any): GameObject | undefined
+- removeInstance (instance: GameObject): void
+
+With GameObjectInstanceFactory you can either create new instance or destroy existing instance.
+
+```js
+const player = game.gameObjectFactory.createObject("player");
+const playerInstance = game.gameObjectInstanceFactory.createInstance("player"); // or player.id
+
+// If we want to destroy player we call:
+game.gameObjectInstanceFactory.removeInstance(playerInstance);
+```
+
+## GameObject API
+
+- readonly isFreeXOnLeft: boolean
+- readonly isFreeXOnRight: boolean
+- readonly isFreeYOnBottom: boolean
+- readonly isFreeYOnTop: boolean
+- readonly isColliding: boolean
+- setPosition (x: number, y: number): void
+- setRelativePosition (x: number, y: number): void
+- setObjectSize (width: number, height: number)
+- setSprite (imageUrl: string, spriteWidthOptions?: SpriteImageWidthOptions): HTMLImageElement
+- setVerticalSpeed (speed: number): void
+- setHorizontalSpeed (speed: number): void
+- setSpeed (speed: number): void
+- isCollidingWith (instance: GameObject | string): boolean
+- onCollision (): void
+- onKey (key: string, callback: Function): void
+- onKeyDown (key: string, callback: Function): void
+- onKeyUp (key: string, callback: Function): void
+
+#### setSprite (imageUrl: string, spriteWidthOptions?: SpriteImageWidthOptions)
+
+Sets image for your object and also this method sets a object width and height accordingly to image size.
+This size can be manipulated through spriteWidthOptions.
+
+```js
+const player = game.gameObjectFactory.createObject("player");
+
+// Object's width and height is same as image width and height
+player.setSprite("player.svg");
+
+// Object's width and height are set to 80% of original image width and height
+player.setSprite("player.svg", { widthMultiplier: .8, heightMultiplier: .8 });
+```
+
+#### onKey (key: string, callback: Function)
+
+OnKey has two parameters - key as a string, for example "w" and callback which will be called.
+
+```js
+const player = game.gameObjectFactory.createObject("player");
+const playerInstance = game.gameObjectInstanceFactory.createInstance("player"); // or player.id
+
+playerInstance.onKey("w", () => playerInstance.setRelativePosition(0, -3));
+```
 
 ## Random
+
 - nextFloat (min?: number, max?: number): number
 - next (min?: number, max?: number): number

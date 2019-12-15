@@ -5,18 +5,19 @@
  */
 
 export default interface GameObject {
+    readonly isFreeXOnLeft: boolean
+    readonly isFreeXOnRight: boolean
+    readonly isFreeYOnBottom: boolean
+    readonly isFreeYOnTop: boolean
+    readonly isColliding: boolean
+
     setPosition (x: number, y: number): void
     setRelativePosition (x: number, y: number): void
     setObjectSize (width: number, height: number)
-    setSprite (imageUrl: string, spriteWidthOptions: SpriteImageWidthOptions): HTMLImageElement
+    setSprite (imageUrl: string, spriteWidthOptions?: SpriteImageWidthOptions): HTMLImageElement
     setVerticalSpeed (speed: number): void
     setHorizontalSpeed (speed: number): void
     setSpeed (speed: number): void
-    isFreeXOnLeft (x): boolean
-    isFreeXOnRight (x): boolean
-    isFreeYOnBottom (y): boolean
-    isFreeYOnTop (y): boolean
-    readonly isColliding: boolean
     isCollidingWith (instance: GameObject | string): boolean
     onCollision (): void
     onKey (key: string, callback: Function): void

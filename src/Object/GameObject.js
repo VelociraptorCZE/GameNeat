@@ -38,7 +38,7 @@ export default class GameObject {
         this.objectSize.height = height;
     }
 
-    setSprite (imageUrl, { widthMultiplier = 1, heightMultiplier = 1 }) {
+    setSprite (imageUrl, { widthMultiplier = 1, heightMultiplier = 1 } = {}) {
         const sprite = new Image;
         sprite.src = imageUrl;
         sprite.onload = () => this.setObjectSize(
@@ -72,20 +72,20 @@ export default class GameObject {
         return collisionList.filter(callback).length > 0 || collisionList.length === 0;
     }
 
-    isFreeXOnLeft (x) {
-        return this._isFree(collisionInstance => this.x + x < collisionInstance.x);
+    get isFreeXOnLeft () {
+        return this._isFree(collisionInstance => this.x < collisionInstance.x);
     }
 
-    isFreeXOnRight (x) {
-        return this._isFree(collisionInstance => this.x + x > collisionInstance.x);
+    get isFreeXOnRight () {
+        return this._isFree(collisionInstance => this.x > collisionInstance.x);
     }
 
-    isFreeYOnTop (y) {
-        return this._isFree(collisionInstance => this.y + y < collisionInstance.y);
+    get isFreeYOnTop () {
+        return this._isFree(collisionInstance => this.y < collisionInstance.y);
     }
 
-    isFreeYOnBottom (y) {
-        return this._isFree(collisionInstance => this.y + y > collisionInstance.y);
+    get isFreeYOnBottom () {
+        return this._isFree(collisionInstance => this.y > collisionInstance.y);
     }
 
     onKey (key, callback) {
