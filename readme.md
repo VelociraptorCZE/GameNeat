@@ -1,6 +1,6 @@
 # GameNeat
 
-A simple library for easier game development in JavaScript on HTML5 canvasContext.
+A simple library for easier game development in JavaScript on HTML5 canvas.
 
 ## NPM
 
