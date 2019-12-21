@@ -4,6 +4,11 @@
  * MIT License
  */
 
+const COLLISION_COORDINATE_NAMES = [
+    { axis: "x", side: "width" },
+    { axis: "y", side: "height" }
+];
+
 export function moveWithGameObject (gameObject) {
     const { horizontalSpeed, verticalSpeed } = gameObject;
     gameObject.x += horizontalSpeed || 0;
@@ -11,15 +16,21 @@ export function moveWithGameObject (gameObject) {
 }
 
 export function detectObjectCollisions (instances, gameObject) {
-    const { objectSize: { width, height } } = gameObject;
-
-    gameObject.collisionList = instances.filter(instance => (
-        instance !== gameObject
-        && gameObject.x >= instance.x - width && gameObject.x <= instance.x + width
-        && gameObject.y >= instance.y - height && gameObject.y <= instance.y + height
-    ));
+    gameObject.collisionList = instances.filter(
+        instance => instance !== gameObject && checkCollisionsWithOtherObject({ gameObject, instance })
+    );
 
     if (gameObject.collisionList.length) {
         gameObject.onCollision();
     }
+}
+
+function checkCollisionsWithOtherObject ({ gameObject, instance }) {
+    return COLLISION_COORDINATE_NAMES.map(({ axis, side }) => (
+        gameObject[axis] >= instance[axis] - gameObject.objectSize[side]
+        && (
+            gameObject[axis] <= instance[axis] + gameObject.objectSize[side]
+            || instance[axis] + instance.objectSize[side] >= gameObject[axis]
+        )
+    )).every(result => result);
 }
