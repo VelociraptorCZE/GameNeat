@@ -6,7 +6,7 @@
 
 import GameObject from "./GameObject";
 
-export default interface GameObjectInstanceFactory {
+export default interface GameObjectInstanceList {
     destroy (instance: GameObject): void
     count (gameObjectId: any): number
 }
