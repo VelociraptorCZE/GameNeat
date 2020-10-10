@@ -211,6 +211,21 @@ const playerInstance = game.gameObjectInstanceFactory.createInstance("player"); 
 playerInstance.onKey("w", () => playerInstance.setRelativePosition(0, -3));
 ```
 
+## GameObjectInstanceList
+
+With GameObjectInstanceList you can manipulate with your instances.
+It's possible to remove single instance with **destroy()** method, or **count()** all instances by game object id.
+
+- destroy (instance: GameObject): void
+- count (gameObjectId: any): number
+
+## Sound
+
+- addSound (soundId: any, soundUrl: string): void
+- playSound (soundId: any): void
+- stopSound (soundId: any): void
+- stopAllSounds (): void
+
 ## Random
 
 - nextFloat (min?: number, max?: number): number
