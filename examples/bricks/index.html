@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bricks</title>
+    <script src="../../dist/game-neat.min.js"></script>
+</head>
+<body>
+    <h1>Bricks</h1>
+
+    <canvas id="game" width="640" height="480"></canvas>
+
+    <script>
+        let ballSpeed = 3;
+		const game = new Game();
+
+		game.scene.setCanvas("#game");
+		game.scene.setBackground({ backgroundColor: "#2d2d2d" });
+
+		const paddle = game.gameObjectFactory.createObject("paddle");
+		paddle.setPosition((640 - 128) / 2, 480 - 24);
+        paddle.setSprite("assets/paddle.png");
+
+        const player = game.gameObjectInstanceFactory.createInstance(paddle.id);
+		player.onKey("a", () => player.setRelativePosition(-6, 0));
+		player.onKey("d", () => player.setRelativePosition(6, 0));
+
+		const ball = game.gameObjectFactory.createObject("ball");
+		ball.setPosition((640 - 128) / 2, 240);
+		ball.setSpeed(game.random.next(0, 1) ? ballSpeed : -ballSpeed);
+		ball.setSprite("assets/ball.png");
+
+		const gameBall = game.gameObjectInstanceFactory.createInstance(ball.id);
+
+		game.scene.setOnRenderCallback(() => {
+			if (ballSpeed < 6) {
+				ballSpeed += .005;
+            }
+
+			if (gameBall.y < 0) {
+				gameBall.setVerticalSpeed(ballSpeed);
+            }
+
+			if (gameBall.x < 0) {
+				gameBall.setHorizontalSpeed(ballSpeed);
+			}
+
+			if (gameBall.x > 600) {
+				gameBall.setHorizontalSpeed(-ballSpeed);
+			}
+
+			if (gameBall.isCollidingWith(player)) {
+				gameBall.setVerticalSpeed(-gameBall.verticalSpeed);
+            }
+        });
+
+		game.scene.startRender();
+    </script>
+</body>
+</html>

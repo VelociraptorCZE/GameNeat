@@ -11,6 +11,7 @@
   "description": "JS game engine",
   "typings": "./@typings/Game.d.ts",
   "scripts": {
+    "dev": "rollup -c --watch",
     "build": "rollup -c"
   },
   "dependencies": {
