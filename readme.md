@@ -160,9 +160,6 @@ With GameObjectInstanceFactory you can create a new instance.
 ```js
 const player = game.gameObjectFactory.createObject("player");
 const playerInstance = game.gameObjectInstanceFactory.createInstance("player"); // or player.id
-
-// If we want to destroy player we call:
-game.gameObjectInstanceFactory.removeInstance(playerInstance);
 ```
 
 ## GameObject API
