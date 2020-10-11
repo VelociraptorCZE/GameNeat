@@ -1,6 +1,6 @@
 {
   "name": "game-neat",
-  "version": "0.6.0",
+  "version": "0.6.5",
   "authors": [
     {
       "name": "Simon Raichl",
@@ -8,9 +8,10 @@
     }
   ],
   "license": "MIT",
-  "description": "JS game engine",
+  "description": "A lightweight JavaScript game engine",
   "typings": "./@typings/Game.d.ts",
   "scripts": {
+    "dev": "rollup -c --watch",
     "build": "rollup -c"
   },
   "dependencies": {

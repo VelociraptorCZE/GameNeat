@@ -1,6 +1,6 @@
 # GameNeat
 
-A simple library for easier game development in JavaScript on HTML5 canvas.
+A simple and lightweight library made for easier game development in JavaScript on HTML5 canvas.
 
 ## NPM
 
@@ -11,9 +11,9 @@ npm i game-neat --save
 ## Create new game
 
 ```js
-import GameNeat from "game-neat";
+import Game from "game-neat";
 
-const game = GameNeat();
+const game = Game();
 ```
 
 ## Scene API
@@ -31,14 +31,14 @@ With Scene API you can manipulate with current Scene, so far there is only one S
 #### setCanvas(element: string | Element)
 
 With this method you can specify your canvasContext element as a target for Scene rendering.
-I recommend to call this method right after creating new game.
+I recommend calling this method right after creating new game.
 
 You can pass selector as a string or directly your canvasContext element.
 
 Returns canvasContext context or throws TypeError exception.
 
 ```js
-const game = GameNeat();
+const game = Game();
 
 game.scene.setCanvas("#game");
 ```
@@ -70,7 +70,7 @@ game.scene.setBackground({ horizontalSpeed: 0 }); // only sets horizontal speed 
 Use this method to initiate scene rendering.
 
 ```js
-const game = GameNeat();
+const game = Game();
 
 game.scene.setCanvas("#game");
 
@@ -154,9 +154,8 @@ const player = game.gameObjectFactory.createObject("player");
 ## GameObjectInstanceFactory
 
 - createInstance (gameObjectId: any): GameObject | undefined
-- removeInstance (instance: GameObject): void
 
-With GameObjectInstanceFactory you can either create new instance or destroy existing instance.
+With GameObjectInstanceFactory you can create a new instance.
 
 ```js
 const player = game.gameObjectFactory.createObject("player");
@@ -211,6 +210,23 @@ const playerInstance = game.gameObjectInstanceFactory.createInstance("player"); 
 
 playerInstance.onKey("w", () => playerInstance.setRelativePosition(0, -3));
 ```
+
+## GameObjectInstanceList
+
+With GameObjectInstanceList you can manipulate with your instances.
+It's possible to remove single instance with **destroy()** method, or **count()** all instances.
+In **count()** or **findInstancesBy()** you can pass either GameObject id or GameObject itself.
+
+- destroy (instance: GameObject): void
+- count (gameObject: any | GameObject): number
+- findInstancesBy (gameObject: any | GameObject): GameObjectInstanceList 
+
+## Sound
+
+- addSound (soundId: any, soundUrl: string): void
+- playSound (soundId: any): void
+- stopSound (soundId: any): void
+- stopAllSounds (): void
 
 ## Random
 

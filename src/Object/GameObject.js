@@ -1,6 +1,6 @@
 /**
  * GameNeat
- * Copyright (c) Simon Raichl 2019
+ * Copyright (c) Simon Raichl 2019 - 2020
  * MIT License
  */
 
@@ -53,13 +53,15 @@ export default class GameObject {
 
     onKeyEvent (keyEvent, key, callback) {
         document.body.addEventListener(keyEvent, e => {
-            if (e.key === key) callback(e);
+            if (e.key === key) {
+                callback(e);
+            }
         });
     }
 
     isCollidingWith (instance) {
-        return this.collisionList.some(collisionInstance =>
-            collisionInstance === instance || collisionInstance.id === instance
+        return this.collisionList.some(
+            collisionInstance => collisionInstance === instance || collisionInstance.id === instance
         );
     }
 
@@ -69,6 +71,7 @@ export default class GameObject {
 
     _isFree (callback) {
         const { collisionList } = this;
+
         return collisionList.filter(callback).length > 0 || collisionList.length === 0;
     }
 

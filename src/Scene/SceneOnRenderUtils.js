@@ -35,7 +35,6 @@ export function drawTexts () {
         }
 
         canvasContext.strokeText(content, x, y);
-
         canvasContext.restore();
     });
 }
@@ -51,7 +50,6 @@ export function drawRectangles () {
         }
 
         canvasContext.strokeRect(x1, y1, x2, y2);
-
         canvasContext.restore();
     });
 }
@@ -82,6 +80,11 @@ export function backgroundAnimation () {
 function setStrokeAndFillColor ({ strokeColor, fillColor, canvasContext }) {
     canvasContext.save();
 
-    if (strokeColor) canvasContext.strokeStyle = strokeColor;
-    if (fillColor) canvasContext.fillStyle = fillColor;
+    if (strokeColor) {
+        canvasContext.strokeStyle = strokeColor;
+    }
+
+    if (fillColor) {
+        canvasContext.fillStyle = fillColor;
+    }
 }

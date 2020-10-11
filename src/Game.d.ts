@@ -1,6 +1,6 @@
 /**
  * GameNeat
- * Copyright (c) Simon Raichl 2019
+ * Copyright (c) Simon Raichl 2019 - 2020
  * MIT License
  */
 
@@ -10,12 +10,14 @@ import GameObjectFactory from "./@typings/GameObjectFactory";
 import GameObjectInstanceFactory from "./@typings/GameObjectInstanceFactory";
 import Random from "./@typings/Random";
 import Sound from "./@typings/Sound";
+import GameObjectInstanceList from "./@typings/GameObjectInstanceList";
 
 export default interface Game {
     scene: Scene,
     draw: Draw,
     gameObjectFactory: GameObjectFactory,
-    gameObjectInstanceFactory: GameObjectInstanceFactory
+    gameObjectInstanceFactory: GameObjectInstanceFactory,
+    gameObjectInstanceList: GameObjectInstanceList
     random: Random
     sound: Sound
 }

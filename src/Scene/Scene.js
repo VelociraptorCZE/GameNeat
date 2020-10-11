@@ -1,6 +1,6 @@
 /**
  * GameNeat
- * Copyright (c) Simon Raichl 2019
+ * Copyright (c) Simon Raichl 2019 - 2020
  * MIT License
  */
 
@@ -65,7 +65,10 @@ export default class Scene {
     }
 
     onRender () {
-        if (!this.isRendering) return;
+        if (!this.isRendering) {
+            return;
+        }
+
         requestAnimationFrame(() => {
             clearCanvas.call(this);
             setCanvasRenderProps.call(this);
