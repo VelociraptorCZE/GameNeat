@@ -1,6 +1,6 @@
 /**
  * GameNeat
- * Copyright (c) Simon Raichl 2019
+ * Copyright (c) Simon Raichl 2019 - 2020
  * MIT License
  */
 
