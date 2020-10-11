@@ -93,7 +93,7 @@
 				if (brick.isCollidingWith(ball)) {
 					++gameData.score;
 					ball.setVerticalSpeed(-ball.verticalSpeed);
-					ball.setHorizontalSpeed(game.random.next() ? -gameData.ballSpeed : gameData.ballSpeed)
+					ball.setHorizontalSpeed(game.random.next(0, 1) ? -gameData.ballSpeed : gameData.ballSpeed)
 					game.gameObjectInstanceList.destroy(brick);
                 }
             });
