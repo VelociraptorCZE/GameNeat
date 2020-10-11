@@ -214,10 +214,12 @@ playerInstance.onKey("w", () => playerInstance.setRelativePosition(0, -3));
 ## GameObjectInstanceList
 
 With GameObjectInstanceList you can manipulate with your instances.
-It's possible to remove single instance with **destroy()** method, or **count()** all instances by game object id.
+It's possible to remove single instance with **destroy()** method, or **count()** all instances.
+In **count()** or **findInstancesBy()** you can pass either GameObject id or GameObject itself.
 
 - destroy (instance: GameObject): void
-- count (gameObjectId: any): number
+- count (gameObject: any | GameObject): number
+- findInstancesBy (gameObject: any | GameObject): GameObjectInstanceList 
 
 ## Sound
 

@@ -4,6 +4,8 @@
  * MIT License
  */
 
+import GameObject from "./GameObject";
+
 export default class GameObjectInstanceList extends Array {
 	constructor () {
 		super();
@@ -21,7 +23,15 @@ export default class GameObjectInstanceList extends Array {
 		return true;
 	}
 
-	count (gameObjectId) {
+	count (gameObject) {
+		const gameObjectId = gameObject instanceof GameObject ? gameObject.id : gameObject;
+
 		return this.reduce((previousCount, instance) => previousCount + (instance.id === gameObjectId), 0);
+	}
+
+	findInstancesBy (gameObject) {
+		const gameObjectId = gameObject instanceof GameObject ? gameObject.id : gameObject;
+
+		return this.filter(instance => instance.id === gameObjectId);
 	}
 }

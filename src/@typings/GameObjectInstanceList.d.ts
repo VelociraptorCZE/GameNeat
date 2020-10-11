@@ -8,5 +8,6 @@ import GameObject from "./GameObject";
 
 export default interface GameObjectInstanceList {
     destroy (instance: GameObject): void
-    count (gameObjectId: any): number
+    count (gameObject: any | GameObject): number
+    findInstancesBy (gameObject: any | GameObject): GameObjectInstanceList
 }

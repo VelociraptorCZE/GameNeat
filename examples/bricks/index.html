@@ -11,48 +11,106 @@
     <canvas id="game" width="640" height="480"></canvas>
 
     <script>
-        let ballSpeed = 3;
+        const gameData = {
+            ballSpeed: 2.5,
+            isGameFinished: false,
+            score: 0
+        };
+
 		const game = new Game();
+
+		const createPlayer = () => {
+			const paddle = game.gameObjectFactory.createObject("paddle");
+			paddle.setPosition((640 - 128) / 2, 480 - 24);
+			paddle.setSprite("assets/paddle.png");
+
+			const player = game.gameObjectInstanceFactory.createInstance(paddle.id);
+			player.onKey("a", () => player.setRelativePosition(-6, 0));
+			player.onKey("d", () => player.setRelativePosition(6, 0));
+
+			return player;
+		};
+
+		const createBall = () => {
+			const ball = game.gameObjectFactory.createObject("ball");
+			ball.setPosition((640 - 128) / 2, 220);
+			ball.setSpeed(gameData.ballSpeed);
+			ball.setSprite("assets/ball.png");
+
+			return game.gameObjectInstanceFactory.createInstance(ball.id);
+		};
+
+		const createBricks = () => {
+			const brick = game.gameObjectFactory.createObject("brick");
+			brick.setSprite("assets/brick.png");
+
+			for (let row = 0; row < 5; ++row) {
+				for (let singleBrick = 0; singleBrick < 5; ++singleBrick) {
+					const brickInstance = game.gameObjectInstanceFactory.createInstance(brick.id);
+					brickInstance.setPosition(128 + (singleBrick * 70), 20 + (40 * row));
+				}
+			}
+
+			return brick;
+        }
 
 		game.scene.setCanvas("#game");
 		game.scene.setBackground({ backgroundColor: "#2d2d2d" });
 
-		const paddle = game.gameObjectFactory.createObject("paddle");
-		paddle.setPosition((640 - 128) / 2, 480 - 24);
-        paddle.setSprite("assets/paddle.png");
+		game.draw.drawText({ content: "Score: {score}", x: 32, y: 32, data: gameData });
+		game.draw.setStrokeAndFillColor("#fff");
 
-        const player = game.gameObjectInstanceFactory.createInstance(paddle.id);
-		player.onKey("a", () => player.setRelativePosition(-6, 0));
-		player.onKey("d", () => player.setRelativePosition(6, 0));
-
-		const ball = game.gameObjectFactory.createObject("ball");
-		ball.setPosition((640 - 128) / 2, 240);
-		ball.setSpeed(game.random.next(0, 1) ? ballSpeed : -ballSpeed);
-		ball.setSprite("assets/ball.png");
-
-		const gameBall = game.gameObjectInstanceFactory.createInstance(ball.id);
+		const player = createPlayer();
+        const ball = createBall();
+        const brickObject = createBricks();
 
 		game.scene.setOnRenderCallback(() => {
-			if (ballSpeed < 6) {
-				ballSpeed += .005;
+			if (gameData.isGameFinished) {
+				game.scene.stopRender();
             }
 
-			if (gameBall.y < 0) {
-				gameBall.setVerticalSpeed(ballSpeed);
+			if (gameData.ballSpeed < 6) {
+				gameData.ballSpeed += game.random.nextFloat(.005, .0075);
             }
 
-			if (gameBall.x < 0) {
-				gameBall.setHorizontalSpeed(ballSpeed);
+			if (ball.y < 0) {
+				ball.setVerticalSpeed(gameData.ballSpeed);
+            }
+
+			if (ball.x < 0) {
+				ball.setHorizontalSpeed(gameData.ballSpeed);
 			}
 
-			if (gameBall.x > 600) {
-				gameBall.setHorizontalSpeed(-ballSpeed);
+			if (ball.x > 600) {
+				ball.setHorizontalSpeed(-gameData.ballSpeed);
 			}
 
-			if (gameBall.isCollidingWith(player)) {
-				gameBall.setVerticalSpeed(-gameBall.verticalSpeed);
+			if (ball.isCollidingWith(player)) {
+				ball.setVerticalSpeed(-ball.verticalSpeed);
             }
-        });
+
+			game.gameObjectInstanceList.findInstancesBy(brickObject).forEach(brick => {
+				if (brick.isCollidingWith(ball)) {
+					++gameData.score;
+					ball.setVerticalSpeed(-ball.verticalSpeed);
+					ball.setHorizontalSpeed(game.random.next() ? -gameData.ballSpeed : gameData.ballSpeed)
+					game.gameObjectInstanceList.destroy(brick);
+                }
+            });
+
+            const isBallOutsideScene = ball.y > 480;
+
+			if (game.gameObjectInstanceList.count(brickObject) === 0 || isBallOutsideScene) {
+				game.draw.setFontSize(24);
+				game.draw.drawText({
+                    x: 270,
+                    y: 260,
+                    content: isBallOutsideScene ? "Game over" : "Nicely done!"
+				});
+
+				gameData.isGameFinished = true;
+            }
+		});
 
 		game.scene.startRender();
     </script>
