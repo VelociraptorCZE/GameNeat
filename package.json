@@ -8,7 +8,7 @@
     }
   ],
   "license": "MIT",
-  "description": "JS game engine",
+  "description": "A lightweight JavaScript game engine",
   "typings": "./@typings/Game.d.ts",
   "scripts": {
     "dev": "rollup -c --watch",
