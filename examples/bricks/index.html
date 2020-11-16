@@ -93,7 +93,7 @@
 	const ball = createBall(player);
 	const brick = createBricks(ball);
 
-	game.scene.setOnRenderCallback(() => {
+	game.scene.onRender = () => {
 		if (gameData.isGameFinished) {
 			game.scene.stopRender();
 		}
@@ -110,7 +110,7 @@
 
 			gameData.isGameFinished = true;
 		}
-	});
+	};
 
 	game.scene.startRender();
 </script>
