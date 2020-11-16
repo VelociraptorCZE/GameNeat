@@ -10,6 +10,7 @@ export default class GameObject {
         this.x = 0;
         this.y = 0;
         this.spriteDimensions = {};
+        this.colliderSize = {};
         this.keyEvents = [];
         this.mouseEvents = new Map;
         this.keyUpEventPressedKeys = new Set;
@@ -67,13 +68,23 @@ export default class GameObject {
         this.spriteDimensions.height = height;
     }
 
-    setSprite (imageUrl, { widthMultiplier = 1, heightMultiplier = 1 } = {}) {
+    setSprite (imageUrl, {
+        widthMultiplier = 1,
+        heightMultiplier = 1,
+        colliderWidthMultiplier = 1,
+        colliderHeightMultiplier = 1
+    } = {}) {
         const sprite = new Image;
         sprite.src = imageUrl;
-        sprite.onload = () => this.setSpriteDimensions(
-            sprite.naturalWidth * widthMultiplier,
-            sprite.naturalHeight * heightMultiplier
-        );
+        sprite.onload = () => {
+            this.setSpriteDimensions(
+                sprite.naturalWidth * widthMultiplier,
+                sprite.naturalHeight * heightMultiplier
+            );
+
+            this.colliderSize.width = this.spriteDimensions.width * colliderWidthMultiplier;
+            this.colliderSize.height = this.spriteDimensions.height * colliderHeightMultiplier;
+        }
 
         return this.sprite = sprite;
     }
@@ -90,6 +101,10 @@ export default class GameObject {
 
     onMouseMove (callback) {
         this.mouseEvents.set("mousemove", callback);
+    }
+
+    onClick (callback) {
+        this.mouseEvents.set("click", callback);
     }
 
     onKey (key, callback) {

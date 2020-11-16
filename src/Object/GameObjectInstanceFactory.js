@@ -35,8 +35,8 @@ export default class GameObjectInstanceFactory {
 
     #cloneObject (gameObject) {
         const { canvas } = this.scene.canvasContext;
-
         const instance = Object.create(gameObject);
+
         instance.collisionList = [];
         this.#attachMouseEvents(instance, canvas);
 

@@ -27,4 +27,6 @@ export default interface GameObject {
 interface SpriteImageWidthOptions {
     widthMultiplier?: number
     heightMultiplier?: number
+    colliderWidthMultiplier?: number
+    colliderHeightMultiplier?: number
 }

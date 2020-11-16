@@ -16,11 +16,19 @@
 <canvas id="game" width="800" height="600"></canvas>
 
 <script>
+    const gameData = { score: 0 };
 	const game = new Game();
 
 	game.scene.setCanvas("#game");
 	game.scene.setBackground({ backgroundUrl: "assets/space.png", verticalSpeed: 8 });
 	game.scene.startRender();
+
+	const rock = game.gameObjectFactory.createObject("rock");
+	rock.setSprite("assets/rock2.svg", {
+		colliderWidthMultiplier: .1,
+        colliderHeightMultiplier: .1
+    });
+	rock.setVerticalSpeed(8);
 
 	const spaceship = game.gameObjectFactory.createObject("spaceship");
 	spaceship.setSprite("assets/spaceship.svg");
@@ -35,7 +43,25 @@
         );
     });
 
+	spaceship.onCollision = player => {
+		if (player.isCollidingWith(rock.id)) {
+			game.scene.stopRender();
+        }
+    };
+
 	game.gameObjectInstanceFactory.createInstance(spaceship.id);
+
+    game.scene.onRender = () => {
+    	++gameData.score;
+
+    	if (game.random.next(0, 25) === 1) {
+    		const rockInstance = game.gameObjectInstanceFactory.createInstance(rock.id);
+            rockInstance.setPosition(game.random.next(60, 700), -100);
+    	}
+    }
+
+    game.draw.setStrokeAndFillColor("#fff");
+    game.draw.drawText({ content: "Score: {score}", data: gameData, x: 12, y: 24 });
 </script>
 </body>
 </html>
