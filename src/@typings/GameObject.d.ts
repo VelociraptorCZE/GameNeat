@@ -21,7 +21,6 @@ export default interface GameObject {
     isCollidingWith (instance: GameObject | string): boolean
     onCollision (): void
     onKey (key: string, callback: Function): void
-    onKeyDown (key: string, callback: Function): void
     onKeyUp (key: string, callback: Function): void
 }
 

@@ -4,10 +4,13 @@
  * MIT License
  */
 
-export function handleGameObjectKeyEvents ({ keyEvents, pressedKeys }) {
-    keyEvents.forEach(({ key, callback }) => {
-        if (pressedKeys.has(key)) {
-            callback();
+export function handleGameObjectKeyEvents (gameObject) {
+    const { keyEvents, keyEventPressedKeys, keyUpEventPressedKeys } = gameObject;
+
+    keyEvents.forEach(({ key, callback, isKeyUp }) => {
+        if (keyEventPressedKeys.has(key) || (isKeyUp && keyUpEventPressedKeys.has(key))) {
+            callback(gameObject);
+            keyUpEventPressedKeys.delete(key);
         }
     });
 }

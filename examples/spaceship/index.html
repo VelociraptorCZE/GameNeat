@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Spaceship</title>
+    <script src="../../dist/game-neat.min.js"></script>
+    <style>
+        #game {
+            cursor: none;
+        }
+    </style>
+</head>
+<body>
+<h1>Spaceship</h1>
+
+<canvas id="game" width="800" height="600"></canvas>
+
+<script>
+	const game = new Game();
+
+	game.scene.setCanvas("#game");
+	game.scene.setBackground({ backgroundUrl: "assets/space.png", verticalSpeed: 8 });
+	game.scene.startRender();
+
+	const spaceship = game.gameObjectFactory.createObject("spaceship");
+	spaceship.setSprite("assets/spaceship.svg");
+	spaceship.setPosition(400, 500);
+	spaceship.onMouseMove(({ event: { offsetX, offsetY }, instance }) => {
+		instance.setPosition(offsetX - instance.objectSize.width / 2, offsetY);
+    });
+
+	game.gameObjectInstanceFactory.createInstance(spaceship.id);
+</script>
+</body>
+</html>

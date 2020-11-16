@@ -18,11 +18,11 @@
     "grumpydi": "1.0.0"
   },
   "devDependencies": {
-    "rollup": "^1.27.12",
-    "@babel/core": "^7.7.5",
-    "@babel/preset-env": "^7.7.6",
+    "rollup": "^2.33.2",
+    "@babel/core": "^7.12.3",
+    "@babel/preset-env": "^7.12.1",
     "rollup-plugin-uglify": "^6.0.4",
-    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-commonjs": "^10.1.0"
   },

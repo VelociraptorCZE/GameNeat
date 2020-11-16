@@ -179,7 +179,6 @@ const playerInstance = game.gameObjectInstanceFactory.createInstance("player"); 
 - isCollidingWith (instance: GameObject | string): boolean
 - onCollision (): void
 - onKey (key: string, callback: Function): void
-- onKeyDown (key: string, callback: Function): void
 - onKeyUp (key: string, callback: Function): void
 
 #### setSprite (imageUrl: string, spriteWidthOptions?: SpriteImageWidthOptions)

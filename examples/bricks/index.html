@@ -22,13 +22,11 @@
 	const createPlayer = () => {
 		const paddle = game.gameObjectFactory.createObject("paddle");
 		paddle.setPosition((640 - 128) / 2, 480 - 24);
-		paddle.setSprite("assets/paddle.png");
+		paddle.setSprite("assets/paddle.png", { widthMultiplier: 1.2 });
+		paddle.onKey("a", player => player.setRelativePosition(-6, 0));
+		paddle.onKey("d", player => player.setRelativePosition(6, 0));
 
-		const player = game.gameObjectInstanceFactory.createInstance(paddle.id);
-		player.onKey("a", () => player.setRelativePosition(-6, 0));
-		player.onKey("d", () => player.setRelativePosition(6, 0));
-
-		return player;
+		return game.gameObjectInstanceFactory.createInstance(paddle.id);
 	};
 
 	const createBall = () => {

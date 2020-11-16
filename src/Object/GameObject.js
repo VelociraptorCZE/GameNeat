@@ -8,7 +8,10 @@ export default class GameObject {
     constructor () {
         this.x = 0;
         this.y = 0;
+        this.keyEvents = [];
         this.objectSize = {};
+        this.keyUpEventPressedKeys = new Set;
+        this.keyEventPressedKeys = new Set;
     }
 
     setPosition (x, y) {
@@ -51,12 +54,16 @@ export default class GameObject {
 
     onCollision () {}
 
-    onKeyEvent (keyEvent, key, callback) {
+    _onKeyEvent (keyEvent, key, callback) {
         document.body.addEventListener(keyEvent, e => {
             if (e.key === key) {
                 callback(e);
             }
         });
+    }
+
+    onMouseMove (callback) {
+        this.mouseMoveEvent = callback;
     }
 
     isCollidingWith (instance) {
@@ -92,18 +99,17 @@ export default class GameObject {
     }
 
     onKey (key, callback) {
-        const { keyEvents, pressedKeys } = this;
+        const { keyEvents } = this;
 
         keyEvents.push({ key, callback });
-        this.onKeyEvent("keydown", key, () => pressedKeys.add(key));
-        this.onKeyEvent("keyup", key, () => pressedKeys.delete(key));
-    }
-
-    onKeyDown (key, callback) {
-        this.onKeyEvent("keydown", key, callback);
+        this._onKeyEvent("keydown", key, () => this.keyEventPressedKeys.add(key));
+        this._onKeyEvent("keyup", key, () => this.keyEventPressedKeys.delete(key));
     }
 
     onKeyUp (key, callback) {
-        this.onKeyEvent("keyup", key, callback);
+        const { keyEvents } = this;
+
+        keyEvents.push({ key, callback, isKeyUp: true });
+        this._onKeyEvent("keyup", key, () => this.keyUpEventPressedKeys.add(key));
     }
 }
