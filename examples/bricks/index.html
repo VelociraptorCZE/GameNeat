@@ -29,18 +29,49 @@
 		return game.gameObjectInstanceFactory.createInstance(paddle.id);
 	};
 
-	const createBall = () => {
+	const createBall = player => {
 		const ball = game.gameObjectFactory.createObject("ball");
 		ball.setPosition((640 - 128) / 2, 220);
 		ball.setSpeed(gameData.ballSpeed);
 		ball.setSprite("assets/ball.png");
+		ball.onCollision = ballInstance => {
+			if (ballInstance.isCollidingWith(player)) {
+				ballInstance.setVerticalSpeed(-ballInstance.verticalSpeed);
+			}
+        };
+
+		ball.onRender = ballInstance => {
+			if (gameData.ballSpeed < 6) {
+				gameData.ballSpeed += game.random.nextFloat(.005, .0075);
+			}
+
+			if (ballInstance.y < 0) {
+				ballInstance.setVerticalSpeed(gameData.ballSpeed);
+			}
+
+			if (ballInstance.x < 0) {
+				ballInstance.setHorizontalSpeed(gameData.ballSpeed);
+			}
+
+			if (ballInstance.x > 600) {
+				ballInstance.setHorizontalSpeed(-gameData.ballSpeed);
+			}
+        }
 
 		return game.gameObjectInstanceFactory.createInstance(ball.id);
 	};
 
-	const createBricks = () => {
+	const createBricks = ball => {
 		const brick = game.gameObjectFactory.createObject("brick");
 		brick.setSprite("assets/brick.png");
+		brick.onCollision = brickInstance => {
+			if (brickInstance.isCollidingWith(ball)) {
+				++gameData.score;
+				ball.setVerticalSpeed(-ball.verticalSpeed);
+				ball.setHorizontalSpeed(game.random.next(0, 1) ? -gameData.ballSpeed : gameData.ballSpeed)
+				game.gameObjectInstanceList.destroy(brickInstance);
+            }
+        };
 
 		for (let row = 0; row < 5; ++row) {
 			for (let singleBrick = 0; singleBrick < 5; ++singleBrick) {
@@ -59,46 +90,17 @@
 	game.draw.setStrokeAndFillColor("#fff");
 
 	const player = createPlayer();
-	const ball = createBall();
-	const brickObject = createBricks();
+	const ball = createBall(player);
+	const brick = createBricks(ball);
 
 	game.scene.setOnRenderCallback(() => {
 		if (gameData.isGameFinished) {
 			game.scene.stopRender();
 		}
 
-		if (gameData.ballSpeed < 6) {
-			gameData.ballSpeed += game.random.nextFloat(.005, .0075);
-		}
-
-		if (ball.y < 0) {
-			ball.setVerticalSpeed(gameData.ballSpeed);
-		}
-
-		if (ball.x < 0) {
-			ball.setHorizontalSpeed(gameData.ballSpeed);
-		}
-
-		if (ball.x > 600) {
-			ball.setHorizontalSpeed(-gameData.ballSpeed);
-		}
-
-		if (ball.isCollidingWith(player)) {
-			ball.setVerticalSpeed(-ball.verticalSpeed);
-		}
-
-		game.gameObjectInstanceList.findInstancesBy(brickObject).forEach(brick => {
-			if (brick.isCollidingWith(ball)) {
-				++gameData.score;
-				ball.setVerticalSpeed(-ball.verticalSpeed);
-				ball.setHorizontalSpeed(game.random.next(0, 1) ? -gameData.ballSpeed : gameData.ballSpeed)
-				game.gameObjectInstanceList.destroy(brick);
-			}
-		});
-
 		const isBallOutsideScene = ball.y > 480;
 
-		if (game.gameObjectInstanceList.count(brickObject) === 0 || isBallOutsideScene) {
+		if (game.gameObjectInstanceList.count(brick) === 0 || isBallOutsideScene) {
 			game.draw.setFontSize(24);
 			game.draw.drawText({
 				x: 270,

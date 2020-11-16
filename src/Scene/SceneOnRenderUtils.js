@@ -62,6 +62,7 @@ export function drawAndHandleObjectEvents () {
         handleGameObjectKeyEvents(gameObject);
         moveWithGameObject(gameObject);
         detectObjectCollisions(instances, gameObject);
+        gameObject.onRender(gameObject);
         this.canvasContext.drawImage(sprite, x, y, width, height);
     });
 }

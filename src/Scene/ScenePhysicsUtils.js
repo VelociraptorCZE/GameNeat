@@ -21,7 +21,7 @@ export function detectObjectCollisions (instances, gameObject) {
     );
 
     if (gameObject.collisionList.length) {
-        gameObject.onCollision();
+        gameObject.onCollision(gameObject);
     }
 }
 

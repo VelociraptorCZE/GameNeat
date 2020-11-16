@@ -14,6 +14,26 @@ export default class GameObject {
         this.keyEventPressedKeys = new Set;
     }
 
+    get isColliding () {
+        return this.collisionList.length > 0;
+    }
+
+    get isFreeXOnLeft () {
+        return this._isFree(collisionInstance => this.x < collisionInstance.x);
+    }
+
+    get isFreeXOnRight () {
+        return this._isFree(collisionInstance => this.x > collisionInstance.x);
+    }
+
+    get isFreeYOnTop () {
+        return this._isFree(collisionInstance => this.y < collisionInstance.y);
+    }
+
+    get isFreeYOnBottom () {
+        return this._isFree(collisionInstance => this.y > collisionInstance.y);
+    }
+
     setPosition (x, y) {
         this.x = x;
         this.y = y;
@@ -52,50 +72,18 @@ export default class GameObject {
         return this.sprite = sprite;
     }
 
-    onCollision () {}
-
-    _onKeyEvent (keyEvent, key, callback) {
-        document.body.addEventListener(keyEvent, e => {
-            if (e.key === key) {
-                callback(e);
-            }
-        });
-    }
-
-    onMouseMove (callback) {
-        this.mouseMoveEvent = callback;
-    }
-
     isCollidingWith (instance) {
         return this.collisionList.some(
             collisionInstance => collisionInstance === instance || collisionInstance.id === instance
         );
     }
 
-    get isColliding () {
-        return this.collisionList.length > 0;
-    }
+    onCollision (instance) {}
 
-    _isFree (callback) {
-        const { collisionList } = this;
+    onRender (instance) {}
 
-        return collisionList.filter(callback).length > 0 || collisionList.length === 0;
-    }
-
-    get isFreeXOnLeft () {
-        return this._isFree(collisionInstance => this.x < collisionInstance.x);
-    }
-
-    get isFreeXOnRight () {
-        return this._isFree(collisionInstance => this.x > collisionInstance.x);
-    }
-
-    get isFreeYOnTop () {
-        return this._isFree(collisionInstance => this.y < collisionInstance.y);
-    }
-
-    get isFreeYOnBottom () {
-        return this._isFree(collisionInstance => this.y > collisionInstance.y);
+    onMouseMove (callback) {
+        this.mouseMoveEvent = callback;
     }
 
     onKey (key, callback) {
@@ -111,5 +99,19 @@ export default class GameObject {
 
         keyEvents.push({ key, callback, isKeyUp: true });
         this._onKeyEvent("keyup", key, () => this.keyUpEventPressedKeys.add(key));
+    }
+
+    _onKeyEvent (keyEvent, key, callback) {
+        document.body.addEventListener(keyEvent, e => {
+            if (e.key === key) {
+                callback(e);
+            }
+        });
+    }
+
+    _isFree (callback) {
+        const { collisionList } = this;
+
+        return collisionList.filter(callback).length > 0 || collisionList.length === 0;
     }
 }
