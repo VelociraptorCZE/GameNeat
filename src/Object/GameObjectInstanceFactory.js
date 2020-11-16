@@ -25,15 +25,20 @@ export default class GameObjectInstanceFactory {
         }
     }
 
+    #attachMouseEvents (instance, canvas) {
+        [...instance.mouseEvents].forEach(([eventName, callback]) => {
+            if (typeof callback === "function") {
+                canvas.addEventListener(eventName, event => callback({ instance, event }));
+            }
+        });
+    }
+
     #cloneObject (gameObject) {
         const { canvas } = this.scene.canvasContext;
 
         const instance = Object.create(gameObject);
         instance.collisionList = [];
-
-        if (typeof instance.mouseMoveEvent === "function") {
-            canvas.addEventListener("mousemove", event => instance.mouseMoveEvent({ instance, event }));
-        }
+        this.#attachMouseEvents(instance, canvas);
 
         return instance;
     }

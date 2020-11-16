@@ -3,13 +3,15 @@
  * Copyright (c) Simon Raichl 2019 - 2020
  * MIT License
  */
+import Vector2 from "../Math/Vector2";
 
 export default class GameObject {
     constructor () {
         this.x = 0;
         this.y = 0;
-        this.keyEvents = [];
         this.spriteDimensions = {};
+        this.keyEvents = [];
+        this.mouseEvents = new Map;
         this.keyUpEventPressedKeys = new Set;
         this.keyEventPressedKeys = new Set;
     }
@@ -32,6 +34,10 @@ export default class GameObject {
 
     get isFreeYOnBottom () {
         return this.#isFree(collisionInstance => this.y > collisionInstance.y);
+    }
+
+    getPosition () {
+        return new Vector2(this.x, this.y);
     }
 
     setPosition (x, y) {
@@ -83,7 +89,7 @@ export default class GameObject {
     onRender (instance) {}
 
     onMouseMove (callback) {
-        this.mouseMoveEvent = callback;
+        this.mouseEvents.set("mousemove", callback);
     }
 
     onKey (key, callback) {

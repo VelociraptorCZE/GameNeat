@@ -27,10 +27,11 @@
 	spaceship.setPosition(350, 400);
 	spaceship.onMouseMove(({ event: { offsetX, offsetY }, instance }) => {
 		const { width, height } = instance.spriteDimensions;
+        const { x, y } = instance.getPosition().interpolate({ x: offsetX - width / 2, y: offsetY }, 0.1);
 
-		instance.setPosition(
-			offsetX - width / 2,
-            offsetY < game.scene.canvasContext.canvas.height - height && offsetY > 0 ? offsetY : instance.y
+        instance.setPosition(
+        	x,
+            y < game.scene.canvasContext.canvas.height - height && y > 0 ? y : instance.y
         );
     });
 
