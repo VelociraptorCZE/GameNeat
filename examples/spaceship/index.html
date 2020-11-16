@@ -24,9 +24,14 @@
 
 	const spaceship = game.gameObjectFactory.createObject("spaceship");
 	spaceship.setSprite("assets/spaceship.svg");
-	spaceship.setPosition(400, 500);
+	spaceship.setPosition(350, 400);
 	spaceship.onMouseMove(({ event: { offsetX, offsetY }, instance }) => {
-		instance.setPosition(offsetX - instance.spriteDimensions.width / 2, offsetY);
+		const { width, height } = instance.spriteDimensions;
+
+		instance.setPosition(
+			offsetX - width / 2,
+            offsetY < game.scene.canvasContext.canvas.height - height && offsetY > 0 ? offsetY : instance.y
+        );
     });
 
 	game.gameObjectInstanceFactory.createInstance(spaceship.id);
