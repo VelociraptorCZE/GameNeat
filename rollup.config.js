@@ -18,6 +18,10 @@ export default {
         babel({
             presets: [
                 ["@babel/env", { modules: false }]
+            ],
+            plugins: [
+                "@babel/plugin-proposal-class-properties",
+                "@babel/plugin-proposal-private-methods"
             ]
         }),
         uglify()

@@ -171,7 +171,7 @@ const playerInstance = game.gameObjectInstanceFactory.createInstance("player"); 
 - readonly isColliding: boolean
 - setPosition (x: number, y: number): void
 - setRelativePosition (x: number, y: number): void
-- setObjectSize (width: number, height: number)
+- setSpriteDimensions (width: number, height: number)
 - setSprite (imageUrl: string, spriteWidthOptions?: SpriteImageWidthOptions): HTMLImageElement
 - setVerticalSpeed (speed: number): void
 - setHorizontalSpeed (speed: number): void

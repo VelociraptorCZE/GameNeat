@@ -4,7 +4,7 @@
  * MIT License
  */
 
-import { GAME_CANVAS_NOT_FOUND } from "../Exception/ErrorMessages";
+import { GAME_CANVAS_NOT_FOUND, generateErrorMessage, PARAMETER_NOT_A_FUNCTION } from "../Exception/ErrorMessages";
 import {
     clearCanvas,
     drawTexts,
@@ -16,7 +16,6 @@ import {
 
 export default class Scene {
     constructor () {
-        this.setOnRenderCallback();
         this.isRendering = false;
     }
 
@@ -61,7 +60,14 @@ export default class Scene {
     }
 
     setOnRenderCallback (callback = () => {}) {
-        this._onRenderCallback = callback;
+        if (typeof callback !== "function") {
+            throw TypeError(generateErrorMessage(PARAMETER_NOT_A_FUNCTION, {
+                type: typeof callback,
+                fnName: "setOnRenderCallback"
+            }));
+        }
+
+        this.#onRenderCallback = callback;
     }
 
     onRender () {
@@ -76,8 +82,10 @@ export default class Scene {
             drawRectangles.call(this);
             drawAndHandleObjectEvents.call(this);
             backgroundAnimation.call(this);
-            this._onRenderCallback();
+            this.#onRenderCallback();
             this.onRender();
         });
     }
+
+    #onRenderCallback = () => {};
 }

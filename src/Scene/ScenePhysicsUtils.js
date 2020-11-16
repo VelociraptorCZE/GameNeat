@@ -27,10 +27,10 @@ export function detectObjectCollisions (instances, gameObject) {
 
 function checkCollisionsWithOtherObject ({ gameObject, instance }) {
     return COLLISION_COORDINATE_NAMES.map(({ axis, side }) => (
-        gameObject[axis] >= instance[axis] - gameObject.objectSize[side]
+        gameObject[axis] >= instance[axis] - gameObject.spriteDimensions[side]
         && (
-            gameObject[axis] <= instance[axis] + gameObject.objectSize[side]
-            || instance[axis] + instance.objectSize[side] >= gameObject[axis]
+            gameObject[axis] <= instance[axis] + gameObject.spriteDimensions[side]
+            || instance[axis] + instance.spriteDimensions[side] >= gameObject[axis]
         )
     )).every(result => result);
 }

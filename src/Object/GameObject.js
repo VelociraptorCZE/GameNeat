@@ -9,7 +9,7 @@ export default class GameObject {
         this.x = 0;
         this.y = 0;
         this.keyEvents = [];
-        this.objectSize = {};
+        this.spriteDimensions = {};
         this.keyUpEventPressedKeys = new Set;
         this.keyEventPressedKeys = new Set;
     }
@@ -19,19 +19,19 @@ export default class GameObject {
     }
 
     get isFreeXOnLeft () {
-        return this._isFree(collisionInstance => this.x < collisionInstance.x);
+        return this.#isFree(collisionInstance => this.x < collisionInstance.x);
     }
 
     get isFreeXOnRight () {
-        return this._isFree(collisionInstance => this.x > collisionInstance.x);
+        return this.#isFree(collisionInstance => this.x > collisionInstance.x);
     }
 
     get isFreeYOnTop () {
-        return this._isFree(collisionInstance => this.y < collisionInstance.y);
+        return this.#isFree(collisionInstance => this.y < collisionInstance.y);
     }
 
     get isFreeYOnBottom () {
-        return this._isFree(collisionInstance => this.y > collisionInstance.y);
+        return this.#isFree(collisionInstance => this.y > collisionInstance.y);
     }
 
     setPosition (x, y) {
@@ -56,15 +56,15 @@ export default class GameObject {
         this.setHorizontalSpeed(speed);
     }
 
-    setObjectSize (width = 0, height = 0) {
-        this.objectSize.width = width;
-        this.objectSize.height = height;
+    setSpriteDimensions (width = 0, height = 0) {
+        this.spriteDimensions.width = width;
+        this.spriteDimensions.height = height;
     }
 
     setSprite (imageUrl, { widthMultiplier = 1, heightMultiplier = 1 } = {}) {
         const sprite = new Image;
         sprite.src = imageUrl;
-        sprite.onload = () => this.setObjectSize(
+        sprite.onload = () => this.setSpriteDimensions(
             sprite.naturalWidth * widthMultiplier,
             sprite.naturalHeight * heightMultiplier
         );
@@ -90,18 +90,18 @@ export default class GameObject {
         const { keyEvents } = this;
 
         keyEvents.push({ key, callback });
-        this._onKeyEvent("keydown", key, () => this.keyEventPressedKeys.add(key));
-        this._onKeyEvent("keyup", key, () => this.keyEventPressedKeys.delete(key));
+        this.#onKeyEvent("keydown", key, () => this.keyEventPressedKeys.add(key));
+        this.#onKeyEvent("keyup", key, () => this.keyEventPressedKeys.delete(key));
     }
 
     onKeyUp (key, callback) {
         const { keyEvents } = this;
 
         keyEvents.push({ key, callback, isKeyUp: true });
-        this._onKeyEvent("keyup", key, () => this.keyUpEventPressedKeys.add(key));
+        this.#onKeyEvent("keyup", key, () => this.keyUpEventPressedKeys.add(key));
     }
 
-    _onKeyEvent (keyEvent, key, callback) {
+    #onKeyEvent (keyEvent, key, callback) {
         document.body.addEventListener(keyEvent, e => {
             if (e.key === key) {
                 callback(e);
@@ -109,7 +109,7 @@ export default class GameObject {
         });
     }
 
-    _isFree (callback) {
+    #isFree (callback) {
         const { collisionList } = this;
 
         return collisionList.filter(callback).length > 0 || collisionList.length === 0;

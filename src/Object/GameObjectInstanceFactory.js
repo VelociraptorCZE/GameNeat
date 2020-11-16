@@ -18,14 +18,14 @@ export default class GameObjectInstanceFactory {
         const gameObject = gameObjectList[gameObjectId];
 
         if (gameObject instanceof GameObject) {
-            const instance = this._cloneObject(gameObject);
+            const instance = this.#cloneObject(gameObject);
             instances.push(instance);
 
             return instance;
         }
     }
 
-    _cloneObject (gameObject) {
+    #cloneObject (gameObject) {
         const { canvas } = this.scene.canvasContext;
 
         const instance = Object.create(gameObject);
