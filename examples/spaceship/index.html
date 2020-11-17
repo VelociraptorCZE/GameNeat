@@ -24,24 +24,14 @@
 	game.scene.startRender();
 
 	const rock = game.gameObjectFactory.createObject("rock");
-	rock.setSprite("assets/rock2.svg", {
-		colliderWidthMultiplier: .1,
-        colliderHeightMultiplier: .1
-    });
+	rock.setSprite("assets/rock2.svg");
 	rock.setVerticalSpeed(8);
 
 	const spaceship = game.gameObjectFactory.createObject("spaceship");
-	spaceship.setSprite("assets/spaceship.svg");
+	spaceship.setSprite("assets/spaceship.svg", { colliderWidthMultiplier: .8 });
 	spaceship.setPosition(350, 400);
-	spaceship.onMouseMove(({ event: { offsetX, offsetY }, instance }) => {
-		const { width, height } = instance.spriteDimensions;
-        const { x, y } = instance.getPosition().interpolate({ x: offsetX - width / 2, y: offsetY }, 0.1);
-
-        instance.setPosition(
-        	x,
-            y < game.scene.canvasContext.canvas.height - height && y > 0 ? y : instance.y
-        );
-    });
+	spaceship.onKey("a", player => player.getPosition().x > 0 && player.setRelativePosition(-6, 0));
+	spaceship.onKey("d", player => player.getPosition().x < 700 && player.setRelativePosition(6, 0));
 
 	spaceship.onCollision = player => {
 		if (player.isCollidingWith(rock.id)) {

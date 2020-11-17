@@ -23,8 +23,9 @@
 		const paddle = game.gameObjectFactory.createObject("paddle");
 		paddle.setPosition((640 - 128) / 2, 480 - 24);
 		paddle.setSprite("assets/paddle.png", { widthMultiplier: 1.2 });
-		paddle.onKey("a", player => player.setRelativePosition(-6, 0));
-		paddle.onKey("d", player => player.setRelativePosition(6, 0));
+		paddle.onMouseMove(({ event: { offsetX }, instance }) => {
+			instance.setPosition(instance.getPosition().interpolate({ x: offsetX }, .2).x, instance.y);
+		});
 
 		return game.gameObjectInstanceFactory.createInstance(paddle.id);
 	};
