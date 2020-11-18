@@ -9,7 +9,7 @@ export default interface Scene {
     setBackground (options: BackgroundOptions): void
     startRender (): void
     stopRender (): void
-    setOnRenderCallback (callback: Function): void
+    onRender (): void
 }
 
 interface BackgroundOptions {

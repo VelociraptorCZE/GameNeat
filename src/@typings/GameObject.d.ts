@@ -14,17 +14,20 @@ export default interface GameObject {
     setPosition (x: number, y: number): void
     setRelativePosition (x: number, y: number): void
     setObjectSize (width: number, height: number)
-    setSprite (imageUrl: string, spriteWidthOptions?: SpriteImageWidthOptions): HTMLImageElement
+    setSprite (imageUrl: string, spriteOptions?: SpriteOptions): HTMLImageElement
     setVerticalSpeed (speed: number): void
     setHorizontalSpeed (speed: number): void
     setSpeed (speed: number): void
     isCollidingWith (instance: GameObject | string): boolean
-    onCollision (): void
+    onCollision (instance: GameObject): void
+    onRender (instance: GameObject): void
+    onClick (callback: Function): void
+    onMouseMove (callback: Function): void
     onKey (key: string, callback: Function): void
     onKeyUp (key: string, callback: Function): void
 }
 
-interface SpriteImageWidthOptions {
+interface SpriteOptions {
     widthMultiplier?: number
     heightMultiplier?: number
     colliderWidthMultiplier?: number

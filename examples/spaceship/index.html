@@ -11,9 +11,8 @@
     </style>
 </head>
 <body>
-<h1>Spaceship</h1>
 
-<canvas id="game" width="800" height="600"></canvas>
+<canvas id="game" width="800" height="720"></canvas>
 
 <script>
     const gameData = { score: 0 };
@@ -28,10 +27,10 @@
 	rock.setVerticalSpeed(8);
 
 	const spaceship = game.gameObjectFactory.createObject("spaceship");
-	spaceship.setSprite("assets/spaceship.svg", { colliderWidthMultiplier: .8 });
+	spaceship.setSprite("assets/spaceship.svg", { colliderHeightMultiplier: .3 });
 	spaceship.setPosition(350, 400);
-	spaceship.onKey("a", player => player.getPosition().x > 0 && player.setRelativePosition(-6, 0));
-	spaceship.onKey("d", player => player.getPosition().x < 700 && player.setRelativePosition(6, 0));
+	spaceship.onKey("a", player => player.getPosition().x > 0 && player.setRelativePosition(-8, 0));
+	spaceship.onKey("d", player => player.getPosition().x < 700 && player.setRelativePosition(8, 0));
 
 	spaceship.onCollision = player => {
 		if (player.isCollidingWith(rock.id)) {

@@ -26,7 +26,7 @@ With Scene API you can manipulate with current Scene, so far there is only one S
 - setBackground (options: BackgroundOptions): void
 - startRender (): void
 - stopRender (): void
-- setOnRenderCallback (callback: Function): void
+- onRender (callback: Function): void
 
 #### setCanvas(element: string | Element)
 
@@ -84,14 +84,14 @@ game.scene.setBackground({
 game.scene.startRender();
 ```
 
-#### setOnRenderCallback(callback: Function)
+#### onRender ()
 
-Sets a callback which will be called on each scene render.
+Empty method, which can be easily overridden, this method will be called every frame.
 
 ```js
-game.scene.setOnRenderCallback(() => {
-    console.log("scene render occurred");
-});
+game.scene.onRender = () => {
+    console.log("Frame was just rendered");
+};
 ```
 
 ## Draw API
@@ -118,9 +118,9 @@ game.draw.drawText({ x: 8, y: 32, content: "Static content" });
 ```js
 const data = { counter: 0 };
 
-game.scene.setOnRenderCallback(() => {
+game.scene.onRender = () => {
     ++data.counter;
-});
+};
 
 game.draw.drawText({ x: 8, y: 32, content: "Counter: {counter}", data });
 ```
@@ -172,19 +172,22 @@ const playerInstance = game.gameObjectInstanceFactory.createInstance("player"); 
 - setPosition (x: number, y: number): void
 - setRelativePosition (x: number, y: number): void
 - setSpriteDimensions (width: number, height: number)
-- setSprite (imageUrl: string, spriteWidthOptions?: SpriteImageWidthOptions): HTMLImageElement
+- setSprite (imageUrl: string, spriteOptions?: SpriteOptions): HTMLImageElement
 - setVerticalSpeed (speed: number): void
 - setHorizontalSpeed (speed: number): void
 - setSpeed (speed: number): void
 - isCollidingWith (instance: GameObject | string): boolean
-- onCollision (): void
+- onCollision (instance: GameObject): void
+- onRender (instance: GameObject): void
+- onClick (callback: Function): void
+- onMouseMove (callback: Function): void
 - onKey (key: string, callback: Function): void
 - onKeyUp (key: string, callback: Function): void
 
-#### setSprite (imageUrl: string, spriteWidthOptions?: SpriteImageWidthOptions)
+#### setSprite (imageUrl: string, spriteOptions?: SpriteOptions)
 
-Sets image for your object and also this method sets a object width and height accordingly to image size.
-This size can be manipulated through spriteWidthOptions.
+Sets a sprite for your object alongside width and height accordingly to image size.
+Sprite dimensions can be manipulated through spriteOptions.
 
 ```js
 const player = game.gameObjectFactory.createObject("player");
@@ -192,7 +195,7 @@ const player = game.gameObjectFactory.createObject("player");
 // Object's width and height is same as image width and height
 player.setSprite("player.svg");
 
-// Object's width and height are set to 80% of original image width and height
+// Sprite is resized to 80% size of the original image
 player.setSprite("player.svg", { widthMultiplier: .8, heightMultiplier: .8 });
 ```
 
