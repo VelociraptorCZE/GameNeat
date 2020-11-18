@@ -58,11 +58,12 @@ export function drawAndHandleObjectEvents () {
     const { instances } = this.gameObjectInstanceFactory;
 
     Object.values(instances).forEach(gameObject => {
-        const { x, y, sprite } = gameObject;
+        const { x, y, sprite, spriteDimensions: { width, height } } = gameObject;
         handleGameObjectKeyEvents(gameObject);
         moveWithGameObject(gameObject);
         detectObjectCollisions(instances, gameObject);
-        this.canvasContext.drawImage(sprite, x, y);
+        gameObject.onRender(gameObject);
+        this.canvasContext.drawImage(sprite, x, y, width, height);
     });
 }
 

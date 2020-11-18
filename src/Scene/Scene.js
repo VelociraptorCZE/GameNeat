@@ -16,7 +16,6 @@ import {
 
 export default class Scene {
     constructor () {
-        this.setOnRenderCallback();
         this.isRendering = false;
     }
 
@@ -53,18 +52,14 @@ export default class Scene {
 
     startRender () {
         this.isRendering = true;
-        this.onRender();
+        this.#renderHandler();
     }
 
     stopRender () {
         this.isRendering = false;
     }
 
-    setOnRenderCallback (callback = () => {}) {
-        this._onRenderCallback = callback;
-    }
-
-    onRender () {
+    #renderHandler () {
         if (!this.isRendering) {
             return;
         }
@@ -76,8 +71,10 @@ export default class Scene {
             drawRectangles.call(this);
             drawAndHandleObjectEvents.call(this);
             backgroundAnimation.call(this);
-            this._onRenderCallback();
             this.onRender();
+            this.#renderHandler();
         });
     }
+
+    onRender () {}
 }

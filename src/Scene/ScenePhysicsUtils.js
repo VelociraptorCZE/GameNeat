@@ -21,16 +21,16 @@ export function detectObjectCollisions (instances, gameObject) {
     );
 
     if (gameObject.collisionList.length) {
-        gameObject.onCollision();
+        gameObject.onCollision(gameObject);
     }
 }
 
 function checkCollisionsWithOtherObject ({ gameObject, instance }) {
     return COLLISION_COORDINATE_NAMES.map(({ axis, side }) => (
-        gameObject[axis] >= instance[axis] - gameObject.objectSize[side]
+        gameObject[axis] >= instance[axis] - gameObject.colliderSize[side]
         && (
-            gameObject[axis] <= instance[axis] + gameObject.objectSize[side]
-            || instance[axis] + instance.objectSize[side] >= gameObject[axis]
+            gameObject[axis] <= instance[axis] + gameObject.colliderSize[side]
+            || instance[axis] + instance.colliderSize[side] >= gameObject[axis]
         )
     )).every(result => result);
 }

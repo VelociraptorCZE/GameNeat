@@ -7,9 +7,10 @@
 import GameObject from "./GameObject";
 
 export default class GameObjectInstanceFactory {
-    onInit ({ gameObjectList, gameObjectInstanceList }) {
+    onInit ({ gameObjectList, gameObjectInstanceList, scene }) {
         this.gameObjectList = gameObjectList;
         this.instances = gameObjectInstanceList;
+        this.scene = scene;
     }
 
     createInstance (gameObjectId) {
@@ -17,18 +18,27 @@ export default class GameObjectInstanceFactory {
         const gameObject = gameObjectList[gameObjectId];
 
         if (gameObject instanceof GameObject) {
-            const instance = this._cloneObject(gameObject);
+            const instance = this.#cloneObject(gameObject);
             instances.push(instance);
 
             return instance;
         }
     }
 
-    _cloneObject (gameObject) {
-        const instance = Object.assign(new GameObject, gameObject);
-        instance.keyEvents = [];
-        instance.pressedKeys = new Set;
+    #attachMouseEvents (instance, canvas) {
+        [...instance.mouseEvents].forEach(([eventName, callback]) => {
+            if (typeof callback === "function") {
+                canvas.addEventListener(eventName, event => callback({ instance, event }));
+            }
+        });
+    }
+
+    #cloneObject (gameObject) {
+        const { canvas } = this.scene.canvasContext;
+        const instance = Object.create(gameObject);
+
         instance.collisionList = [];
+        this.#attachMouseEvents(instance, canvas);
 
         return instance;
     }
